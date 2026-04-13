@@ -2,7 +2,7 @@ import {expect, test} from '@playwright/test';
 import { LoginPage } from '../pages/loginpage';
 import {toasterMess} from '../utils/toaster';
 
-test.describe.only("loginPage",()=>{
+test.describe("loginPage",()=>{
 
     test("login with invalid company name",async ({page})=>{
         const loginFun = new LoginPage(page);
