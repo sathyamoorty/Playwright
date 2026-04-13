@@ -18,7 +18,7 @@ export class ProfilePage {
         return descVar;
     }
     async subBtn(){
-        await this.page.getByRole('button', { name: 'Save' }).click();
+        await this.page.getByRole("button",{name:"Save"}).click();
     };
   
     

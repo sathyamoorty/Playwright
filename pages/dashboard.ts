@@ -16,10 +16,8 @@ export class DashboardPage {
     }
 
     async userAccessCtrl(){
-        // const labelTex= this.page.locator(".mb-0 text-uppercase");
-        // await expect(labelTex).toBeVisible();
-        await this.page.getByRole('button', { name: 'User & Access Control' }).click();
-    }
+        await this.page.getByRole("button", { name: "User & Access Control" }).click();
+        }   
     async profileSettings(){
         await this.page.locator("label:has-text('Profile')").click();
         const profileText = this.page.locator("h3:has-text('Profiles')");
