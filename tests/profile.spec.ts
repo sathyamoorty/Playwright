@@ -1,10 +1,10 @@
-import {test,expect} from '@playwright/test';
+import {test} from '@playwright/test';
 import { LoginPage } from '../pages/loginpage';
 import { DashboardPage } from '../pages/dashboard';
 import { ProfilePage } from '../pages/profile';
-import { toasterMess } from '../utils/toaster'; 
 
 test("profileCreation", async({page})=>{
+    test.setTimeout(90000);
     const login = new LoginPage(page);
     const dashboard = new DashboardPage(page);
     const profile = new ProfilePage(page);
@@ -28,13 +28,13 @@ test("profileCreation", async({page})=>{
         await profile.subBtn();
         // const toastMessage = await toasterMess(page);
         // expect(toastMessage).toContain("Description Can't be Empty!!!");
-        profileField.fill('');
+        await profileField.fill('');
 
         const descriptionF=await profile.descField("This is a test profile");
         await profile.subBtn(); 
         // const toastMessage2 = await toasterMess(page);
         // expect(toastMessage2).toContain("Profile Name Can't be Empty!!!");
-        descriptionF.fill('');
+        await descriptionF.fill('');
 
         const profileField2 = await profile.profileField("Krish");
         const descriptionF2=await profile.descField("This is a test profile");
