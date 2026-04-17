@@ -6,13 +6,17 @@ export class DashboardPage {
 
     async profileIcon(){
         await this.page.locator("#livewireOverly").waitFor({ state: "hidden", timeout: 15000 }).catch(() => {});
-        await this.page.locator("//li[@class='dropdown dropdown-user nav-item']//a[@class='dropdown-toggle nav-link dropdown-user-link']//img").click();
+          //await expect(this.page).toHaveURL(/\/admin\/Dashboard/i);
+            await this.page.locator('.dropdown-toggle.nav-link.dropdown-user-link').click();
+         // await this.page.getByText('settings', { exact: true }).click();
+
     }
 
     async crmSettings(){
-        await this.page.getByText(" CRM Setting").nth(1).click();
+       // await this.page.getByText(" CRM Setting").nth(1).click();
         // await this.page.waitForTimeout(2000);
-        
+          await this.page.getByRole('link', { name: ' CRM Setting' }).click();
+
     }
 
     async userAccessCtrl(){
