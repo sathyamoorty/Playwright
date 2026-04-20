@@ -7,8 +7,14 @@ export class DashboardPage {
     async profileIcon(){
         await this.page.locator("#livewireOverly").waitFor({ state: "hidden", timeout: 15000 }).catch(() => {});
           //await expect(this.page).toHaveURL(/\/admin\/Dashboard/i);
-            await this.page.locator('.dropdown-toggle.nav-link.dropdown-user-link').click();
+        await this.page.locator('.dropdown-toggle.nav-link.dropdown-user-link').first().click();
          // await this.page.getByText('settings', { exact: true }).click();
+  //          const profileMenu = this.page
+  //   .getByRole("listitem")
+  //   .filter({ hasText: "rsoft My Profile" })
+  //   .getByRole("link");
+
+  // await profileMenu.click();
 
     }
 

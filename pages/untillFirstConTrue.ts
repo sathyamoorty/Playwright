@@ -2,7 +2,7 @@ import { Page } from "@playwright/test";
 export class leadWithNoTask{
     constructor(private page:Page){}
 
-    async diffDropDown(){
+    async diffDropDown( ){
           await this.page.getByRole('combobox', { name: 'Rsoft IT' }).click();
           await this.page.getByRole('treeitem', { name: 'Admin Admin' }).click();
     }

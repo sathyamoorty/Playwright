@@ -9,7 +9,7 @@ import { everyTimeRecordSave } from "../pages/everyTimeSave";
 import { everyTimeModifiedRecord } from "../pages/everyTimeModified";
 import { detailView } from "../pages/detailViewSms";
 import { listView } from "../pages/listViewSms";
-import { TakeScreenShot } from "../utils/screenshot";
+//import { TakeScreenShot } from "../utils/screenshot";
 
 
 test.describe("Workflow Message End-to-End Flow",()=>{
@@ -25,7 +25,7 @@ test.describe("Workflow Message End-to-End Flow",()=>{
   const everyTimeModi=new everyTimeModifiedRecord(page);
   const detailViewSMS=new detailView(page);
   const listSMS=new listView(page);
-  const screenShot=new TakeScreenShot();
+ // const screenShot=new TakeScreenShot();
 
 
   const suffix = Date.now().toString().slice(-6);
@@ -116,7 +116,7 @@ await expect(
     await leads.saveBtn();
     await expect(page.getByRole('heading',{name:"Leads Detail View"})).toBeVisible();
     await leads.updateTimeAndData();
-    await screenShot.capture(page, "After Save")
+    //await screenShot.capture(page, "After Save")
     console.log("Condition matched and task get triggered")
     console.log("END: leadWithTask");
   })
