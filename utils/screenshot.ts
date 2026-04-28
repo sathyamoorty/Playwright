@@ -1,9 +1,3 @@
-// export async function takeScreenshot(page: any, name: string) {
-//   await page.screenshot({
-//     path: `screenshots/${name}.png`,
-//     fullPage: true,
-//   });
-// }
 import { Page, TestInfo } from "@playwright/test";
 
 export async function takeScreenshot(

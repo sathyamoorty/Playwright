@@ -10,7 +10,7 @@ export class creatEntity{
         await this.page.locator("input[name='notification_tasktitle']").fill("Create Entity Task");
     }
     async popupDropDown(){
-        //  this.page.getByRole('combobox',{name:"Select an Option"}).nth(0).click()
+        //  th  is.page.getByRole('combobox',{name:"Select an Option"}).nth(0).click()
         //  this.page.getByRole('treeitem',{name:"All UI Module"}).click();
           await this.page.locator('#modulename').getByRole('combobox', { name: 'Select an Option' }).click();
          await this.page.getByRole('treeitem', { name: 'All UI Module' }).click();

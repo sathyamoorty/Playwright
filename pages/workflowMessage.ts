@@ -73,19 +73,36 @@ export class WorkflowMessagePage {
     await this.page.getByRole("button", { name: "Save" }).click();
     await expect(this.page.getByRole("button", { name: "Submit" })).toBeVisible();
 
-    await this.page.locator(".switchery.switchery-default").first().click();
+    await this.page.locator(".switchery.switchery-default").first().click();  
     await this.page.getByRole("button", { name: "Submit" }).click();
 
    
   }
-       async lastWorkFlow() {
-          const lastRow = this.page.locator('[class*="Removerow_"]').last();
-          const toggle = lastRow.locator('span.switchery.switchery-default');
+  //      async lastWorkFlow() 
+  // {
+  //         const lastRow = this.page.locator('[class*="Removerow_"]').last();
+  //         const toggle = lastRow.locator('span.switchery.switchery-default');
 
-          await toggle.scrollIntoViewIfNeeded();
-          await toggle.click();
-          console.log('Last workflow toggle clicked');
+  //         await toggle.scrollIntoViewIfNeeded();
+  //         await toggle.click();
+  //         console.log('Last workflow toggle clicked');
+  //  }
+    async enableToggleByWorkflowName(workflowName: string) {
+  const workflowRow = this.page
+    .locator('[class*="Removerow_"]')
+    .filter({
+      has: this.page.getByText(workflowName, { exact: true }),
+    })
+    .first();
+
+  await expect(workflowRow).toBeVisible({ timeout: 15000 });
+  await workflowRow.scrollIntoViewIfNeeded();
+
+  const toggle = workflowRow.locator('span.switchery.switchery-default');
+  await expect(toggle).toBeVisible();
+  await toggle.click();
 }
+
          async clickEditIcon() {
       const lastRow = this.page.locator('[class*="Removerow_"]').last();
     const editIcon = lastRow.locator('span').filter({ hasText: 'edit_square' }).last();

@@ -48,11 +48,13 @@ test.describe("Workflow Message End-to-End Flow",()=>{
   await workflowMessage.createBtn();
   await expect(page.getByRole('heading',{name:'Creating workflow'})).toBeVisible();
   await workflowMessage.step1("Leads", workFlowName);
+  // console.log(workFlowName)
   await expect(page.getByRole('heading',{name:'Creating workflow'})).toBeVisible();
   await workflowMessage.step2();
   await expect(page.getByRole('heading',{name:'Creating workflow'})).toBeVisible();
   await workflowMessage.step3();
-  await workflowMessage.lastWorkFlow();
+  await workflowMessage.enableToggleByWorkflowName(workFlowName)
+  // console.log(workFlowName)
   console.log("END: WorkflowCreation-redirectToWorkflowToChangeTheFlow1");
   })
 

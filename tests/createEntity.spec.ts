@@ -11,7 +11,7 @@ import { takeScreenshot } from '../utils/screenshot';
 
 test.describe("createEntityTask",async()=>{
     test("methods",async({page},testInfo)=>{
-        test.setTimeout(150000);
+        test.setTimeout(400000);
         const login=new LoginPage(page);
         const dashBoard=new DashboardPage(page);
         const workFlow=new WorkflowMessagePage(page);
@@ -57,8 +57,9 @@ test.describe("createEntityTask",async()=>{
             await entity.mapTheField2();
             await entity.popupBtn();
             await entity.toggleTask();
-            await workFlow.lastWorkFlow();
+            await workFlow.enableToggleByWorkflowName(workFlowName);
         })
+      // Only on the first save
         await test.step("redirectToLead",async()=>{
             await leadsMo.menuIcon();
             await expect(page.getByRole('heading',{name:'Leads'})).toBeVisible();
@@ -67,40 +68,40 @@ test.describe("createEntityTask",async()=>{
             await entity.dataForLeads( "Krish","Rsoft", "1000");
             await leadsMo.saveBtn();
             await expect(page.getByRole('heading',{name:"Leads Detail View"})).toBeVisible();
-            await sShot.takeScreenshot(page,testInfo,"Create entity executed")
+            await sShot.takeScreenshot(page,testInfo,"Only on the first save-Create entity executed")
             await entity.relatedModule();
             //await sShot.takeScreenshot(page,"Lead captured in the related module")
             await expect(page.getByRole("heading",{name:"All UI Module Detail View"})).toBeVisible();
-            await sShot.takeScreenshot(page,testInfo,"Related module updated")
+            await sShot.takeScreenshot(page,testInfo,"Only on the first save-Related module updated")
         })
         await test.step("editFirstRecord",async()=>
         {
             await leadsMo.menuIcon();
             await expect(page.getByRole('heading',{name:'Leads'})).toBeVisible();
-            await leadsWithNo.editFirstRow();
+            await leadsWithNo.editFirstRow(); 
             await entity.changeAssign();
             await leadsMo.saveBtn();
             await expect(page.getByRole('heading',{name:"Leads Detail View"})).toBeVisible();
-            await sShot.takeScreenshot(page,testInfo,"Condition not matched, create entity not get executed")
+            await sShot.takeScreenshot(page,testInfo,"Only on the first save-condition not-matched")
         })
         await test.step("navigateToWorkFlow",async()=>
          {
-            await dashBoard.profileIcon();
-           await dashBoard.crmSettings();
+        await dashBoard.profileIcon();
+        await dashBoard.crmSettings();
         await expect(page.getByRole('heading',{name:'Summary'})).toBeVisible();
         await workFlow.otherSettings();
-         await workFlow.workFlowSettings();
+        await workFlow.workFlowSettings();
         await expect(page.getByRole('heading',{name:'Workflow'})).toBeVisible();
         await workFlow.clickEditIcon();
         await expect(page.getByRole('heading',{name:'Editing Workflow'})).toBeVisible();
-         await workFlow.whenToExecuteWorkFlow1();
+        await workFlow.whenToExecuteWorkFlow1();
         await expect(page.getByRole('heading',{name:'Editing Workflow'})).toBeVisible();
         await workFlow.editNext();
         await expect(page.getByRole('heading',{name:'Editing Workflow'})).toBeVisible();
         await workFlow.editNext();
         await expect(page.getByRole('heading',{name:'Editing Workflow'})).toBeVisible();
-          await workFlow.editSubBtn();
-          await leadsMo.menuIcon();
+        await workFlow.editSubBtn();
+        await leadsMo.menuIcon();
         })
         // Until the first time the condition is true
   console.log("START: LeadWithNoTask");
@@ -111,10 +112,124 @@ test.describe("createEntityTask",async()=>{
     await entity.dataForLeads( "Krish","Rsoft", "1000");
     await leadsMo.saveBtn();
     await expect(page.getByRole('heading',{name:"Leads Detail View"})).toBeVisible();
-    await sShot.takeScreenshot(page, testInfo,"Condition is not matched, entity not get executed")
+    await sShot.takeScreenshot(page, testInfo,"Until the first time the condition is true-condition-not-matched")
     //console.log("Condition not matched , task not get triggered")
     console.log("END: LeadWithNoTask");
   });
+  await test.step("conditionMatched",async()=>{
+    // await leadsWithNo.editFirstRow
+    await leadsMo.menuIcon();
+    await leadsWithNo.editFirstRow();
+    await leadsWithNo.againDropDown();
+    await leadsMo.saveBtn();
+    await expect(page.getByRole('heading',{name:"Leads Detail View"})).toBeVisible();
+    await sShot.takeScreenshot(page, testInfo,"Until the first time the condition is true-condition-matched-entity-executed")
+    await entity.relatedModule();
+    await expect(page.getByRole("heading",{name:"All UI Module Detail View"})).toBeVisible();
+    await sShot.takeScreenshot(page,testInfo,"Until the first time the condition is true-condition-matched-entity-executed-related module")
+    await leadsMo.menuIcon();
+    await leadsWithNo.editFirstRow();
+    await page.waitForLoadState('networkidle')
+    await leadsMo.saveBtn();
+    await expect(page.getByRole('heading',{name:"Leads Detail View"})).toBeVisible();
+    await sShot.takeScreenshot(page, testInfo,"Until the first time the condition is true-condition-not matched-entity-not executed")
+  })
+
+  //Every time the record is save
+  await test.step("navigateToWorkFlowFor3",async()=>
+  {
+  await dashBoard.profileIcon();
+  await dashBoard.crmSettings();
+  await expect(page.getByRole('heading',{name:'Summary'})).toBeVisible();
+  await workFlow.otherSettings();
+  await workFlow.workFlowSettings();
+  await expect(page.getByRole('heading',{name:'Workflow'})).toBeVisible();
+  await workFlow.clickEditIcon();
+  await expect(page.getByRole('heading',{name:'Editing Workflow'})).toBeVisible();
+  await everyTimeSave.thirdWorkFlow();
+  await workFlow.editNext();
+  await expect(page.getByRole('heading',{name:'Editing Workflow'})).toBeVisible();
+  await workFlow.editNext();
+  await expect(page.getByRole('heading',{name:'Editing Workflow'})).toBeVisible();
+  await workFlow.editSubBtn();  
+  console.log("END: redirectToWorkflowToChangeTheFlow3");
+  })
+  await test.step("redirectToLeadModule",async()=>{
+    await leadsMo.menuIcon();
+    await leadsMo.addLead();
+    await expect(page.getByRole('heading',{name:'Create Leads'})).toBeVisible();
+    await entity.dataForLeads( "Krish","Rsoft", "1000");
+    await leadsMo.saveBtn();
+    await expect(page.getByRole('heading',{name:"Leads Detail View"})).toBeVisible();
+    await sShot.takeScreenshot(page,testInfo,"Every time the record is save-condition-matched-entity-executed")
+    await entity.relatedModule();
+            //await sShot.takeScreenshot(page,"Lead captured in the related module")
+    await expect(page.getByRole("heading",{name:"All UI Module Detail View"})).toBeVisible();
+    await sShot.takeScreenshot(page,testInfo,"Every time the record is save-condition-matched-entity-executed- Related module updated")
+  })
+  await test.step("editRow",async()=>{
+    await leadsMo.menuIcon();
+    await leadsWithNo.editFirstRow();
+    await entity.dataForLeads( "Krishna","Rsoft", "1000");
+     await leadsMo.saveBtn();
+    await expect(page.getByRole('heading',{name:"Leads Detail View"})).toBeVisible();
+    await sShot.takeScreenshot(page,testInfo,"Every time the record is save-condition-matched-entity-executed-after the edit")
+    await entity.relatedModule();
+            //await sShot.takeScreenshot(page,"Lead captured in the related module")
+    await expect(page.getByRole("heading",{name:"All UI Module Detail View"})).toBeVisible();
+    await sShot.takeScreenshot(page,testInfo,"Every time the record is save-condition-matched-entity-executed-Related module updated")
+  })
+  await test.step("conditionMismatch",async()=>{
+     await leadsMo.menuIcon();
+    await leadsWithNo.editFirstRow();
+    await leadsWithNo.diffDropDown();
+    await leadsMo.saveBtn();
+     await expect(page.getByRole('heading',{name:"Leads Detail View"})).toBeVisible();
+    await sShot.takeScreenshot(page,testInfo,"Every time the record is save-condition-not matched-entity-not executed")
+
+  })
+
+      //Every time the record is modified
+      await test.step("redirectToWork",async()=>
+      {
+        await dashBoard.profileIcon();
+        await dashBoard.crmSettings();
+        await expect(page.getByRole('heading',{name:'Summary'})).toBeVisible();
+        await workFlow.otherSettings();
+        await workFlow.workFlowSettings();
+        await expect(page.getByRole('heading',{name:'Workflow'})).toBeVisible();
+        await workFlow.clickEditIcon();
+        await expect(page.getByRole('heading',{name:'Editing Workflow'})).toBeVisible();
+        await everyModi.everyTimeModified();
+        await workFlow.editNext();
+        await expect(page.getByRole('heading',{name:'Editing Workflow'})).toBeVisible();
+        await workFlow.editNext();
+        await expect(page.getByRole('heading',{name:'Editing Workflow'})).toBeVisible();
+        await workFlow.editSubBtn();  
+        console.log("END: redirectToWorkflowToChangeTheFlow3");
+      })
+
+      await test.step("redirectToLeadCreation",async()=>{
+       await leadsMo.menuIcon();
+       await leadsMo.addLead();
+       await expect(page.getByRole('heading',{name:'Create Leads'})).toBeVisible();
+       await entity.dataForLeads( "Krish","Rsoft", "1000");
+       await leadsMo.saveBtn();
+       await expect(page.getByRole('heading',{name:"Leads Detail View"})).toBeVisible();
+       await sShot.takeScreenshot(page,testInfo,"Every time the record is modified-condition-not-matched-entity-not-executed")
+      })
+      await test.step("editTheFirstRow",async()=>{
+        await leadsMo.menuIcon();
+        await leadsWithNo.editFirstRow();
+        await page.waitForLoadState('networkidle')
+       await leadsMo.saveBtn();
+        await expect(page.getByRole('heading',{name:"Leads Detail View"})).toBeVisible();
+       await sShot.takeScreenshot(page,testInfo,"Every time the record is modified-condition-matched-entity-executed")
+         await entity.relatedModule();
+            //await sShot.takeScreenshot(page,"Lead captured in the related module")
+       await expect(page.getByRole("heading",{name:"All UI Module Detail View"})).toBeVisible();
+       await sShot.takeScreenshot(page,testInfo," Every time the record is modified-condition-matched-entity-executed-Related module updated")
+      })
 
     
              
